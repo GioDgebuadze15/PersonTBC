@@ -2,9 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonTbc.Api", "PersonTbc.Api\PersonTbc.Api.csproj", "{9065AA9A-0B53-449A-A7FE-0D5255061DCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonTbc.Data", "PersonTbc.Data\PersonTbc.Data.csproj", "{27F7F77F-7CF8-4374-92BF-6B1DE56BA941}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonTbc.Database", "PersonTbc.Database\PersonTbc.Database.csproj", "{27F7F77F-7CF8-4374-92BF-6B1DE56BA941}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonTbc.Services", "PersonTbc.Services\PersonTbc.Services.csproj", "{AB62060D-E840-4B9F-BD48-3B24EC95AFB4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonTbc.Data", "PersonTbc.Data\PersonTbc.Data.csproj", "{19099C9E-0B16-479E-9DC5-09404DE1F825}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonTbc.Services", "PersonTbc.Services\PersonTbc.Services.csproj", "{1B334E87-A8CB-4EEB-AE14-350131011D22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,9 +22,13 @@ Global
 		{27F7F77F-7CF8-4374-92BF-6B1DE56BA941}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27F7F77F-7CF8-4374-92BF-6B1DE56BA941}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27F7F77F-7CF8-4374-92BF-6B1DE56BA941}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AB62060D-E840-4B9F-BD48-3B24EC95AFB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AB62060D-E840-4B9F-BD48-3B24EC95AFB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AB62060D-E840-4B9F-BD48-3B24EC95AFB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AB62060D-E840-4B9F-BD48-3B24EC95AFB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19099C9E-0B16-479E-9DC5-09404DE1F825}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19099C9E-0B16-479E-9DC5-09404DE1F825}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19099C9E-0B16-479E-9DC5-09404DE1F825}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19099C9E-0B16-479E-9DC5-09404DE1F825}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B334E87-A8CB-4EEB-AE14-350131011D22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B334E87-A8CB-4EEB-AE14-350131011D22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B334E87-A8CB-4EEB-AE14-350131011D22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B334E87-A8CB-4EEB-AE14-350131011D22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

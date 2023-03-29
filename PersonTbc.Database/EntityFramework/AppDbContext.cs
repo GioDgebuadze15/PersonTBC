@@ -2,7 +2,7 @@
 using PersonTbc.Data.Models;
 
 
-namespace PersonTbc.Data.EntityFramework;
+namespace PersonTbc.Database.EntityFramework;
 
 public class AppDbContext : DbContext
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PersonTbc.Data.EntityFramework;
+using PersonTbc.Database.EntityFramework;
 
-namespace PersonTbc.Data.DatabaseRepository;
+namespace PersonTbc.Database.DatabaseRepository;
 
 public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 {
@@ -21,22 +21,25 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     public IEnumerable<TEntity> GetAll()
         => _dbSet.ToList();
 
-    public async Task Add(TEntity entity)
+    public async Task<TEntity> Add(TEntity entity)
     {
         _dbSet.Add(entity);
         await _ctx.SaveChangesAsync();
+        return entity;
     }
 
-    public async Task Update(TEntity entity)
+    public async Task<TEntity> Update(TEntity entity)
     {
         _dbSet.Attach(entity);
         _ctx.Entry(entity).State = EntityState.Modified;
         await _ctx.SaveChangesAsync();
+        return entity;
     }
 
-    public async Task Remove(TEntity entity)
+    public async Task<bool> Remove(TEntity entity)
     {
         _dbSet.Remove(entity);
         await _ctx.SaveChangesAsync();
+        return true;
     }
 }

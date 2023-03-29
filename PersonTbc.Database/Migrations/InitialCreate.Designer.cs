@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using PersonTbc.Data.EntityFramework;
+using PersonTbc.Database.EntityFramework;
 
 #nullable disable
 
-namespace PersonTbc.Data.Migrations
+namespace PersonTbc.Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230329105025_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +25,7 @@ namespace PersonTbc.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("PersonTbc.Data.Models.Gender", b =>
+            modelBuilder.Entity("PersonTbc.Database.Models.Gender", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -42,7 +45,7 @@ namespace PersonTbc.Data.Migrations
                     b.ToTable("Genders");
                 });
 
-            modelBuilder.Entity("PersonTbc.Data.Models.Person", b =>
+            modelBuilder.Entity("PersonTbc.Database.Models.Person", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -80,9 +83,9 @@ namespace PersonTbc.Data.Migrations
                     b.ToTable("People");
                 });
 
-            modelBuilder.Entity("PersonTbc.Data.Models.Person", b =>
+            modelBuilder.Entity("PersonTbc.Database.Models.Person", b =>
                 {
-                    b.HasOne("PersonTbc.Data.Models.Gender", "Gender")
+                    b.HasOne("PersonTbc.Database.Models.Gender", "Gender")
                         .WithMany()
                         .HasForeignKey("GenderId")
                         .OnDelete(DeleteBehavior.Cascade)

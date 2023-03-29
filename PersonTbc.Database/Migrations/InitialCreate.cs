@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace PersonTbc.Data.Migrations
+namespace PersonTbc.Database.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration

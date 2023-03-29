@@ -3,20 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using PersonTbc.Data.EntityFramework;
+using PersonTbc.Database.EntityFramework;
 
 #nullable disable
 
-namespace PersonTbc.Data.Migrations
+namespace PersonTbc.Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230329105025_InitialCreate")]
-    partial class InitialCreate
+    partial class AppDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,7 +22,7 @@ namespace PersonTbc.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("PersonTbc.Data.Models.Gender", b =>
+            modelBuilder.Entity("PersonTbc.Data.Gender", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -45,7 +42,7 @@ namespace PersonTbc.Data.Migrations
                     b.ToTable("Genders");
                 });
 
-            modelBuilder.Entity("PersonTbc.Data.Models.Person", b =>
+            modelBuilder.Entity("PersonTbc.Data.Person", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -56,7 +53,7 @@ namespace PersonTbc.Data.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateOfBirth")
+                    b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
@@ -83,9 +80,9 @@ namespace PersonTbc.Data.Migrations
                     b.ToTable("People");
                 });
 
-            modelBuilder.Entity("PersonTbc.Data.Models.Person", b =>
+            modelBuilder.Entity("PersonTbc.Data.Person", b =>
                 {
-                    b.HasOne("PersonTbc.Data.Models.Gender", "Gender")
+                    b.HasOne("PersonTbc.Data.Gender", "Gender")
                         .WithMany()
                         .HasForeignKey("GenderId")
                         .OnDelete(DeleteBehavior.Cascade)
