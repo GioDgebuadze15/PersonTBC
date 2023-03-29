@@ -1,4 +1,4 @@
-﻿namespace PersonTbc.Models;
+﻿namespace PersonTbc.Data.Models;
 
 public enum AccountStatus
 {

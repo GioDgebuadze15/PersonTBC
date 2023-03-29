@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PersonTbc.Models;
+namespace PersonTbc.Data.Models;
 
 public class Person : BaseModel<int>
 {
