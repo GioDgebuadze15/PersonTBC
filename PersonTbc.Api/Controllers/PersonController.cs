@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using PersonTbc.Data.Form;
-using PersonTbc.Data.Models;
 using PersonTbc.Services.AppServices.PersonAppService;
 
 namespace PersonTbc.Api.Controllers;
@@ -39,9 +38,9 @@ public class PersonController : ApiController
         return Ok(_iPersonService.EditPerson(updatePersonForm));
     }
 
-    [HttpDelete]
-    public IActionResult Delete(Person person)
+    [HttpDelete("{id::int}")]
+    public IActionResult Delete(int id)
     {
-        return Ok(_iPersonService.DeletePerson(person));
+        return Ok(_iPersonService.DeletePerson(id));
     }
 }

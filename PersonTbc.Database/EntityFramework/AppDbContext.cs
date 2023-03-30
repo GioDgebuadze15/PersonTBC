@@ -11,5 +11,5 @@ public class AppDbContext : DbContext
     }
 
     public DbSet<Person> People { get; set; }
-    public DbSet<Gender> Genders { get; set; }
+    public DbSet<GenderEntity> Genders { get; set; }
 }

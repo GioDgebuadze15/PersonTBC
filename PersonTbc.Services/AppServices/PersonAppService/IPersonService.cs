@@ -8,5 +8,5 @@ public interface IPersonService
     Person? GetPersonById(int id);
     Task<Person> AddPerson(CreatePersonForm createPersonForm);
     Task<Person> EditPerson(UpdatePersonForm updatePersonForm);
-    Task<bool> DeletePerson(Person person);
+    Task<bool> DeletePerson(int id);
 }

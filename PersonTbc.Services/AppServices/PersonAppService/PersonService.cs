@@ -19,7 +19,7 @@ public class PersonService : IPersonService
         {
             return _ctx.GetById(id);
         }
-        catch (InvalidOperationException ex)
+        catch (InvalidOperationException e)
         {
             //TODO: Log the exception in txt file 
             return null;
@@ -35,7 +35,7 @@ public class PersonService : IPersonService
             PersonalId = createPersonForm.PersonalId,
             DateOfBirth = createPersonForm.DateOfBirth,
             //TODO: correct this
-            Gender = new Gender()
+            GenderId = 1,
         };
         await _ctx.Add(person);
         return person;
@@ -49,7 +49,7 @@ public class PersonService : IPersonService
         person.PersonalId = updatePersonForm.PersonalId;
         person.DateOfBirth = updatePersonForm.DateOfBirth;
         //TODO: correct this
-        person.Gender = new Gender();
+        person.GenderId = 1;
         person.Status = updatePersonForm.Status;
 
         await _ctx.Update(person);
@@ -57,6 +57,18 @@ public class PersonService : IPersonService
     }
 
 
-    public async Task<bool> DeletePerson(Person person)
-        => await _ctx.Remove(person);
+    public async Task<bool> DeletePerson(int id)
+    {
+        try
+        {
+            var person = _ctx.GetById(id);
+            await _ctx.Remove(person);
+            return true;
+        }
+        catch (InvalidOperationException e)
+        {
+            //TODO: Log the exception in txt file 
+            return false;
+        }
+    }
 }

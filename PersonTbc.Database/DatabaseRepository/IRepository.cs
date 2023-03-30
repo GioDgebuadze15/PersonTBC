@@ -6,5 +6,5 @@ public interface IRepository<TEntity> where TEntity : class
     IEnumerable<TEntity> GetAll();
     Task<TEntity> Add(TEntity entity);
     Task<TEntity> Update(TEntity entity);
-    Task<bool> Remove(TEntity entity);
+    Task Remove(TEntity entity);
 }

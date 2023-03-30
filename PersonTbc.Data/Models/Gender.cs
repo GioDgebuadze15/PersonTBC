@@ -1,8 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace PersonTbc.Data.Models;
 
-namespace PersonTbc.Data.Models;
-
-public class Gender : BaseModel<int>
+public enum Gender
 {
-    [Required] public string Value { get; set; }
+    Male=0,
+    Female
 }

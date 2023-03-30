@@ -36,10 +36,9 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         return entity;
     }
 
-    public async Task<bool> Remove(TEntity entity)
+    public async Task Remove(TEntity entity)
     {
         _dbSet.Remove(entity);
         await _ctx.SaveChangesAsync();
-        return true;
     }
 }
