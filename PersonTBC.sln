@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonTbc.Data", "PersonTbc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonTbc.Services", "PersonTbc.Services\PersonTbc.Services.csproj", "{1B334E87-A8CB-4EEB-AE14-350131011D22}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyGenerator", "KeyGenerator\KeyGenerator.csproj", "{AC491031-C1B9-47A2-8B27-8A8C62D66E44}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{1B334E87-A8CB-4EEB-AE14-350131011D22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B334E87-A8CB-4EEB-AE14-350131011D22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B334E87-A8CB-4EEB-AE14-350131011D22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC491031-C1B9-47A2-8B27-8A8C62D66E44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC491031-C1B9-47A2-8B27-8A8C62D66E44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC491031-C1B9-47A2-8B27-8A8C62D66E44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC491031-C1B9-47A2-8B27-8A8C62D66E44}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

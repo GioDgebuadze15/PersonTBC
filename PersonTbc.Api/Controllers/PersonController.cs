@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PersonTbc.Data.Form;
 using PersonTbc.Services.AppServices.PersonAppService;
@@ -23,22 +24,25 @@ public class PersonController : ApiController
     [HttpGet]
     public IActionResult GetAll()
     {
-        return Ok();
+        return Ok("Hello World!");
     }
 
     [HttpPost]
+    [Authorize]
     public IActionResult Add([FromBody] CreatePersonForm createPersonForm)
     {
         return Ok(_iPersonService.AddPerson(createPersonForm));
     }
 
     [HttpPut]
+    [Authorize]
     public IActionResult Edit([FromBody] UpdatePersonForm updatePersonForm)
     {
         return Ok(_iPersonService.EditPerson(updatePersonForm));
     }
 
     [HttpDelete("{id::int}")]
+    [Authorize]
     public IActionResult Delete(int id)
     {
         return Ok(_iPersonService.DeletePerson(id));
