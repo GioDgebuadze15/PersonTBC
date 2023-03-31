@@ -5,7 +5,7 @@ namespace PersonTbc.Services.AppServices;
 
 public static class PasswordHasher
 {
-    // Hash password method (as described in my previous answer)
+    // Hash password method 
     public static string HashPassword(string password)
     {
         using var sha256 = SHA256.Create();

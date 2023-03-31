@@ -12,9 +12,19 @@ using PersonTbc.Database.EntityFramework;
 using PersonTbc.Services.AppServices;
 using PersonTbc.Services.AppServices.PersonAppService;
 using PersonTbc.Services.AppServices.UserAppService;
+using PersonTbc.Services.Middlewares;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// builder.Services.AddLogging(logging =>
+// {
+//     // logging.ClearProviders();
+//     logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
+//     // logging.AddFile();
+//     
+// });
+
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDb")));
@@ -95,7 +105,12 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+
+
 var app = builder.Build();
+
+// var loggerFactory = app.Services.GetService<ILoggerFactory>();
+// loggerFactory.AddFile(builder.Configuration["Logging:LogFilePath"]); 
 
 if (app.Environment.IsDevelopment())
 {
@@ -109,7 +124,7 @@ if (app.Environment.IsDevelopment())
         options.DocumentTitle = "Persons API";
 
         //TODO: correct this js file 
-        // Pass the JWT token to Swagger
+        // Pass the JWT token to Swagger 
         options.InjectJavascript("/swagger/authorize.js");
     });
 }
@@ -120,6 +135,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseStaticFiles();
+
+app.UseMiddleware<LoggingMiddleware>();
 
 app.MapControllers();
 

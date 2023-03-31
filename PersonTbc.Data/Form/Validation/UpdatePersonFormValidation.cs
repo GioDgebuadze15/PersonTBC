@@ -12,7 +12,7 @@ public class UpdatePersonFormValidation : AbstractValidator<UpdatePersonForm>
         RuleFor(x => x.PersonalId.ToString())
             .NotEmpty().WithMessage("PersonalId is required.")
             .Length(9).WithMessage("PersonalId must be exactly 9 digits.");
-        RuleFor(x => x.Gender).IsInEnum().WithMessage("Gender is not correct.");
+        // RuleFor(x => x.Gender).IsInEnum().WithMessage("Gender is not correct.");
         RuleFor(x => x.Status).IsInEnum().WithMessage("Account status is not correct.");
     }
 }

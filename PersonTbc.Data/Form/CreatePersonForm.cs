@@ -9,5 +9,5 @@ public class CreatePersonForm
     public uint PersonalId { get; set; }
 
     public DateTime? DateOfBirth { get; set; }
-    public Gender Gender { get; set; }
+    public string Gender { get; set; }
 }

@@ -1,0 +1,47 @@
+<form class="gradient-custom" [formGroup]="registrationForm" (ngSubmit)="onRegister()">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card text-white" style="border-radius: 1rem;">
+          <div class="card-body p-5 text-center">
+
+            <div class="md-5 mt-md-4 pb-5">
+
+              <h2 class="fw-bold mb-2 text-uppercase">Register</h2>
+              <p class="text-white-50 mb-5">Please enter your information!</p>
+
+
+              <mat-form-field appearance="fill" class="form-outline form-white">
+                <input type="email"
+                       placeholder="Enter your email" formControlName="email" matInput/>
+              </mat-form-field>
+
+
+              <mat-form-field appearance="fill" class="form-outline form-white  ">
+                <input
+                  type="password"
+                  placeholder="Enter your password" formControlName="password" matInput/>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill" class="form-outline form-white mb-4 ">
+                <input
+                  type="password"
+                  placeholder="Enter your password" formControlName="confirmPassword" matInput/>
+              </mat-form-field>
+
+
+              <button class="btn btn-outline-light btn-lg px-5" type="submit">Register</button>
+
+            </div>
+
+            <div>
+              <p class="mb-0">Already Registered? <strong class="text-primary" (click)="goToLoginPage()">Log in</strong>
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
