@@ -20,7 +20,6 @@ public class UserService : IUserService
     public async Task<RegistrationResponse> RegisterUser(CreateUserForm createUserForm)
     {
         var existedUser = _ctx.Users.FirstOrDefault(x => x.Email.Equals(createUserForm.Email));
-        //TODO: return described error
         if (existedUser is not null) return new RegistrationResponse(400, "User already exists!", null);
 
         var user = new User
@@ -38,7 +37,6 @@ public class UserService : IUserService
     public LoginResponse LoginUser(LoginUserForm loginUserForm)
     {
         var user = _ctx.Users.FirstOrDefault(x => x.Email.Equals(loginUserForm.Email));
-        //TODO: return described error
         if (user is null) return new LoginResponse(404, "Incorrect data", null);
         var passwordIsCorrect = PasswordHasher.VerifyPassword(loginUserForm.Password, user.Password);
         if (!passwordIsCorrect) return new LoginResponse(404, "Incorrect data", null);

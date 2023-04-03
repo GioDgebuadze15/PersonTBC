@@ -12,8 +12,8 @@ using PersonTbc.Database.EntityFramework;
 namespace PersonTbc.Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230401044310_InitAnotherComputer")]
-    partial class InitAnotherComputer
+    [Migration("20230403060026_DatabaseCreated")]
+    partial class DatabaseCreated
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -67,8 +67,8 @@ namespace PersonTbc.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("PersonalId")
-                        .HasColumnType("bigint");
+                    b.Property<decimal>("PersonalId")
+                        .HasColumnType("decimal(20,0)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");

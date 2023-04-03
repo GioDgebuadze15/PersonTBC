@@ -2,6 +2,7 @@ bin/
 obj/
 .idea/
 /PersonTbc.Api/key
+/PersonTbc.Api/Logs/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/

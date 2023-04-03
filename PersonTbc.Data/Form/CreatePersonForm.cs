@@ -1,6 +1,4 @@
-﻿using PersonTbc.Data.Models;
-
-namespace PersonTbc.Data.Form;
+﻿namespace PersonTbc.Data.Form;
 
 public class CreatePersonForm
 {

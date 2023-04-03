@@ -9,10 +9,14 @@ namespace PersonTbc.Services.AppServices.PersonAppService;
 public class PersonService : IPersonService
 {
     private readonly IRepository<Person> _ctx;
+    private readonly IRepository<GenderEntity> _genderCtx;
+    private readonly ILogger<PersonService> _logger;
 
-    public PersonService(IRepository<Person> ctx)
+    public PersonService(IRepository<Person> ctx, IRepository<GenderEntity> genderCtx, ILogger<PersonService> logger)
     {
         _ctx = ctx;
+        _genderCtx = genderCtx;
+        _logger = logger;
     }
 
     public object GetPersonById(int id)
@@ -23,12 +27,11 @@ public class PersonService : IPersonService
         }
         catch (InvalidOperationException ex)
         {
-            //TODO: Log the exception in txt file 
-            return null;
+            _logger.LogError(ex, "An error occurred in GetPersonById with id {id}", id);
+            return new object();
         }
     }
 
-    //TODO: apply projection here
     public object GetPersonBySearchValue(string searchString)
     {
         var lowerCaseSearchString = searchString.ToLower().Trim().Split(" ").First();
@@ -41,28 +44,31 @@ public class PersonService : IPersonService
             .ToList();
     }
 
-    //TODO: apply projection here
     public IEnumerable<object> GetAllPeople()
         => _ctx.GetAll().Select(PersonViewModels.Default.Compile());
 
     public async Task<object> AddPerson(CreatePersonForm createPersonForm)
     {
-        if (PersonalIdAlreadyExists(createPersonForm.PersonalId)) return null;
+        if (PersonalIdAlreadyExists(createPersonForm.PersonalId)) return new object();
+        var gender = GetGenderEntity(createPersonForm.Gender);
+        if (gender is null) return new object();
         var person = new Person
         {
             FirstName = createPersonForm.FirstName,
             LastName = createPersonForm.LastName,
             PersonalId = createPersonForm.PersonalId,
             DateOfBirth = createPersonForm.DateOfBirth,
-            //TODO: correct this
-            GenderId = 1,
+            Gender = gender
         };
-        await _ctx.Add(person);
-        return PersonViewModels.Default.Compile().Invoke(person);
+        var result = await _ctx.Add(person);
+        return PersonViewModels.Default.Compile().Invoke(result);
     }
+
 
     public async Task<object> EditPerson(UpdatePersonForm updatePersonForm)
     {
+        var gender = GetGenderEntity(updatePersonForm.Gender);
+        if (gender is null) return new object();
         try
         {
             var person = _ctx.GetById(updatePersonForm.Id);
@@ -70,8 +76,7 @@ public class PersonService : IPersonService
             person.LastName = updatePersonForm.LastName;
             person.PersonalId = updatePersonForm.PersonalId;
             person.DateOfBirth = updatePersonForm.DateOfBirth;
-            //TODO: correct this
-            person.GenderId = 1;
+            person.Gender = gender;
             person.Status = updatePersonForm.Status;
 
             await _ctx.Update(person);
@@ -79,8 +84,9 @@ public class PersonService : IPersonService
         }
         catch (InvalidOperationException ex)
         {
-            //TODO: Log the exception in txt file 
-            return null;
+            _logger.LogError(ex, "An error occurred in EditPerson. Person doesnt exist with id {id}",
+                updatePersonForm.Id);
+            return new object();
         }
     }
 
@@ -93,9 +99,9 @@ public class PersonService : IPersonService
             await _ctx.Remove(person);
             return true;
         }
-        catch (InvalidOperationException e)
+        catch (InvalidOperationException ex)
         {
-            //TODO: Log the exception in txt file 
+            _logger.LogError(ex, "An error occurred in DeletePerson with id {id}", id);
             return false;
         }
     }
@@ -104,5 +110,11 @@ public class PersonService : IPersonService
     {
         var people = _ctx.GetAll();
         return people.Any(x => x.PersonalId.Equals(personalId));
+    }
+
+    private GenderEntity? GetGenderEntity(string gender)
+    {
+        var genders = _genderCtx.GetAll();
+        return genders.FirstOrDefault(x => x.Gender.ToLower().Contains(gender.ToLower()));
     }
 }

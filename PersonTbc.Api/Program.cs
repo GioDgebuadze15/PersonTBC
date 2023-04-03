@@ -134,7 +134,6 @@ if (app.Environment.IsDevelopment())
         options.DocExpansion(DocExpansion.None);
         options.DocumentTitle = "Persons API";
 
-        //TODO: correct this js file 
         // Pass the JWT token to Swagger 
         options.InjectJavascript("/swagger/authorize.js");
     });
