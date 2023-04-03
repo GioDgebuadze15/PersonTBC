@@ -1,6 +1,9 @@
 @import "../../../variables";
 
 nav {
-  background-color: $nav-and-footer;
+  background-color: $card;
   color:white;
+}
+.homePage:hover{
+  cursor: pointer;
 }

@@ -15,19 +15,31 @@ using PersonTbc.Services.AppServices.UserAppService;
 using PersonTbc.Services.Middlewares;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
+const string allowAngularClient = "_allowAngularClient";
+
 var builder = WebApplication.CreateBuilder(args);
 
-// builder.Services.AddLogging(logging =>
-// {
-//     // logging.ClearProviders();
-//     logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
-//     // logging.AddFile();
-//     
-// });
+builder.Services.AddLogging(logging =>
+{
+    logging.ClearProviders();
+    logging.AddConsole();
+    logging.AddFile(builder.Configuration["File:Path"]);
+
+});
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDb")));
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: allowAngularClient, policy =>
+    {
+        policy.AllowAnyHeader();
+        policy.AllowAnyMethod();
+        policy.WithOrigins("http://localhost:4200","https://localhost:4200");
+    });
+});
 
 builder.Services.AddAuthentication("jwt")
     .AddJwtBearer("jwt", o =>
@@ -72,6 +84,7 @@ builder.Services.AddValidatorsFromAssembly(typeof(CreatePersonFormValidation).As
 builder.Services.AddValidatorsFromAssembly(typeof(UpdatePersonFormValidation).Assembly);
 builder.Services.AddValidatorsFromAssembly(typeof(CreateUserForm).Assembly);
 
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -109,8 +122,6 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
-// var loggerFactory = app.Services.GetService<ILoggerFactory>();
-// loggerFactory.AddFile(builder.Configuration["Logging:LogFilePath"]); 
 
 if (app.Environment.IsDevelopment())
 {
@@ -139,5 +150,7 @@ app.UseStaticFiles();
 app.UseMiddleware<LoggingMiddleware>();
 
 app.MapControllers();
+
+app.UseCors(allowAngularClient);
 
 app.Run();

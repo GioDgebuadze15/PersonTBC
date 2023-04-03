@@ -10,25 +10,26 @@
               <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
               <p class="text-white-50 mb-5">Please enter your login and password!</p>
 
-
-              <mat-form-field appearance="fill" class="form-outline form-white">
-                <input type="email"
+              <div class="form-outline mb-4">
+                <input type="email" class="form-control form-control-lg"
                        placeholder="Enter your email" formControlName="email" matInput/>
-              </mat-form-field>
+              </div>
 
 
-              <mat-form-field appearance="fill" class="form-outline form-white mb-4 ">
+              <div class="form-outline mb-4">
                 <input
+                  class="form-control form-control-lg"
                   type="password"
                   placeholder="Enter your password" formControlName="password" matInput/>
-              </mat-form-field>
+              </div>
 
               <button class="btn btn-outline-light btn-lg px-5" type="submit">Login</button>
 
             </div>
 
             <div>
-              <p class="mb-0">Don't have an account? <strong class="text-primary" (click)="goToRegistrationPage()">Sign Up</strong>
+              <p class="mb-0">Don't have an account? <strong class="signUpButton text-primary" (click)="goToRegistrationPage()">Sign
+                Up</strong>
               </p>
             </div>
 

@@ -2,6 +2,10 @@
 
 form {
   .card{
-    background-color: $nav-and-footer;
+    background-color: $card;
   }
+}
+.signUpButton:hover{
+  text-decoration: underline;
+  cursor: pointer;
 }

@@ -1,7 +1,14 @@
 <nav class="navbar navbar-expand-lg d-flex justify-content-between">
-  <div class="ms-4" (click)="goToHomePage()">TBC Application</div>
+  <div class="homePage ms-4" (click)="goToHomePage()">
+    <img width="24" src="assets/tbc.png" alt="TBC Logo"/>TBC Application
+  </div>
+
   <div class="d-flex align-items-center me-4" (click)="goToLoginPage()">
-    <i class="fas fa-user me-2"></i>
-    <button>Login</button>
+    <button *ngIf="userService.isAuthorized | async" (click)="logout()" mat-raised-button color="primary"><i
+      class="fas fa-sign-out me-2"></i> Log out
+    </button>
+    <button *ngIf="!(userService.isAuthorized | async)" mat-raised-button color="primary"><i class="fas fa-sign-in me-2">
+    </i> Login
+    </button>
   </div>
 </nav>

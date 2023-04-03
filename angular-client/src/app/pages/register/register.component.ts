@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-register',
@@ -10,7 +11,7 @@ import {Router} from "@angular/router";
 export class RegisterComponent {
   registrationForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(private fb: FormBuilder, private router: Router, private userService: UserService) {
     this.registrationForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
@@ -21,8 +22,7 @@ export class RegisterComponent {
 
   onRegister() {
     if (this.registrationForm.valid) {
-      // do something with the form data
-      console.log(this.registrationForm.value);
+      this.userService.register(this.registrationForm);
     }
   }
 

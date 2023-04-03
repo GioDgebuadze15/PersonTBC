@@ -11,23 +11,25 @@
               <p class="text-white-50 mb-5">Please enter your information!</p>
 
 
-              <mat-form-field appearance="fill" class="form-outline form-white">
-                <input type="email"
+              <div class="form-outline mb-4">
+                <input type="email" class="form-control form-control-lg"
                        placeholder="Enter your email" formControlName="email" matInput/>
-              </mat-form-field>
+              </div>
 
 
-              <mat-form-field appearance="fill" class="form-outline form-white  ">
+              <div class="form-outline mb-4">
                 <input
+                  class="form-control form-control-lg"
                   type="password"
                   placeholder="Enter your password" formControlName="password" matInput/>
-              </mat-form-field>
+              </div>
 
-              <mat-form-field appearance="fill" class="form-outline form-white mb-4 ">
+              <div class="form-outline mb-4">
                 <input
+                  class="form-control form-control-lg"
                   type="password"
                   placeholder="Enter your password" formControlName="confirmPassword" matInput/>
-              </mat-form-field>
+              </div>
 
 
               <button class="btn btn-outline-light btn-lg px-5" type="submit">Register</button>
@@ -35,7 +37,7 @@
             </div>
 
             <div>
-              <p class="mb-0">Already Registered? <strong class="text-primary" (click)="goToLoginPage()">Log in</strong>
+              <p class="mb-0">Already Registered? <strong class="loginButton text-primary" (click)="goToLoginPage()">Log in</strong>
               </p>
             </div>
 

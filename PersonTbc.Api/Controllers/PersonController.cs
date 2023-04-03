@@ -20,31 +20,37 @@ public class PersonController : ApiController
     {
         return Ok(_iPersonService.GetPersonById(id));
     }
+    [HttpGet("search")]
+    public IActionResult Get([FromQuery] string searchString)
+    {
+        return Ok(_iPersonService.GetPersonBySearchValue(searchString));
+    }
+    
 
     [HttpGet]
     public IActionResult GetAll()
-    {
-        return Ok("Hello World!");
-    }
+        => Ok(_iPersonService.GetAllPeople());
 
     [HttpPost]
     [Authorize]
-    public IActionResult Add([FromBody] CreatePersonForm createPersonForm)
+    public async Task<IActionResult> Add([FromBody] CreatePersonForm createPersonForm)
     {
-        return Ok(_iPersonService.AddPerson(createPersonForm));
+        return Ok(await _iPersonService.AddPerson(createPersonForm));
     }
 
     [HttpPut]
     [Authorize]
-    public IActionResult Edit([FromBody] UpdatePersonForm updatePersonForm)
+    public async Task<IActionResult> Edit([FromBody] UpdatePersonForm updatePersonForm)
     {
-        return Ok(_iPersonService.EditPerson(updatePersonForm));
+        return Ok(await _iPersonService.EditPerson(updatePersonForm));
     }
 
     [HttpDelete("{id::int}")]
     [Authorize]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        return Ok(_iPersonService.DeletePerson(id));
+        var result = await _iPersonService.DeletePerson(id);
+        if (result == false) return BadRequest("Can't find person to delete");
+        return Ok("Deleted successfully");
     }
 }

@@ -10,7 +10,7 @@ public class CreatePersonFormValidation : AbstractValidator<CreatePersonForm>
         RuleFor(x => x.LastName).NotEmpty().WithMessage("LastName is required.");
         RuleFor(x => x.PersonalId.ToString())
             .NotEmpty().WithMessage("PersonalId is required.")
-            .Length(9).WithMessage("PersonalId must be exactly 9 digits.");
+            .Length(11).WithMessage("PersonalId must be exactly 9 digits.");
         // RuleFor(x => x.Gender).NotEmpty().WithMessage("Gender is not correct.");
     }
 }

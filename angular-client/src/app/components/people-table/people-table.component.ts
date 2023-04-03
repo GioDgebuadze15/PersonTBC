@@ -1,34 +1,20 @@
 import {Component} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
+import {PersonService} from '../../services/person.service'
 import * as XLSX from 'xlsx';
+import {Router} from "@angular/router";
+import {UserService} from "../../services/user.service";
 
-export interface PeriodicElement {
+
+export interface Person {
+  id?: number
   firstName: string;
   lastName: string;
   personalId: number;
   dateOfBirth: string;
   gender: string;
-  accountStatus: number;
+  accountStatus: string;
 }
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {
-    firstName: 'Giorgi',
-    lastName: 'Dgebuadze',
-    personalId: 19001107342,
-    dateOfBirth: "05/05/2022",
-    gender: 'Male',
-    accountStatus: 1
-  },
-  {
-    firstName: 'Valeri',
-    lastName: 'Gelovani',
-    personalId: 192313342,
-    dateOfBirth: "03/04/2022",
-    gender: 'Female',
-    accountStatus: 0
-  },
-];
 
 
 @Component({
@@ -37,8 +23,14 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./people-table.component.scss']
 })
 export class PeopleTableComponent {
+  people: Person[] = [];
   displayedColumns: string[] = ['firstName', 'lastName', 'personalId', 'dateOfBirth', 'gender', 'accountStatus', 'buttons'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
+  dataSource: MatTableDataSource<Person> = new MatTableDataSource<Person>();
+  searchQuery?: any;
+  private isAuthorized: boolean = false;
+
+  constructor(private personService: PersonService, private router: Router, private userService: UserService) {
+  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -53,11 +45,65 @@ export class PeopleTableComponent {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  handleEnter(event: Event) {
+    const searchString = (event.target as HTMLInputElement).value;
+    console.log(searchString)
+    if (searchString === "") {
+      this.initializePeople();
+      return;
+    }
+    this.personService.searchPeople(searchString).subscribe((data) => {
+      this.initializePeopleAfterSearch(data);
+    })
+  }
+
 
   saveTableDataToExcel() {
-    const worksheet = XLSX.utils.json_to_sheet(ELEMENT_DATA);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Table Data');
-    XLSX.writeFile(workbook, 'table-data.xlsx');
+    this.personService.getPeople().subscribe((people) => {
+      const worksheet = XLSX.utils.json_to_sheet(people);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Table Data');
+      XLSX.writeFile(workbook, 'table-data.xlsx');
+    });
+
   }
+
+  goToEditPage(id: number): void {
+    this.router.navigate([`edit-person/${id}`])
+  }
+
+  goToAddPage(): void {
+    this.router.navigate(['add-person'])
+  }
+
+  delete(id: number): void {
+    this.userService.isAuthorized.subscribe(value => {
+      this.isAuthorized = value;
+    });
+    if (!this.isAuthorized) {
+      this.router.navigate(['login'])
+      return;
+    }
+    this.personService.deletePerson(id).subscribe((data) => {
+      console.log(data)
+      this.initializePeople();
+    });
+  }
+
+  ngOnInit(): void {
+    this.initializePeople();
+  }
+
+  initializePeople(): void {
+    this.personService.getPeople().subscribe((people) => {
+
+      this.dataSource = new MatTableDataSource<Person>(people);
+    });
+  }
+
+  initializePeopleAfterSearch(people: Person[]): void {
+    this.dataSource = new MatTableDataSource<Person>(people);
+  }
+
+
 }
