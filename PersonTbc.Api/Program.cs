@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using PersonTbc.Data.Form;
 using PersonTbc.Data.Form.Validation;
 using PersonTbc.Database.DatabaseRepository;
 using PersonTbc.Database.EntityFramework;
@@ -82,7 +81,8 @@ builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssembly(typeof(CreatePersonFormValidation).Assembly);
 builder.Services.AddValidatorsFromAssembly(typeof(UpdatePersonFormValidation).Assembly);
-builder.Services.AddValidatorsFromAssembly(typeof(CreateUserForm).Assembly);
+builder.Services.AddValidatorsFromAssembly(typeof(LoginUserFormValidation).Assembly);
+builder.Services.AddValidatorsFromAssembly(typeof(CreateUserFormValidation).Assembly);
 
 
 builder.Services.AddEndpointsApiExplorer();

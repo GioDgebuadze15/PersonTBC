@@ -20,12 +20,13 @@ public class PersonController : ApiController
     {
         return Ok(_iPersonService.GetPersonById(id));
     }
+
     [HttpGet("search")]
     public IActionResult Get([FromQuery] string searchString)
     {
         return Ok(_iPersonService.GetPersonBySearchValue(searchString));
     }
-    
+
 
     [HttpGet]
     public IActionResult GetAll()
@@ -35,14 +36,26 @@ public class PersonController : ApiController
     [Authorize]
     public async Task<IActionResult> Add([FromBody] CreatePersonForm createPersonForm)
     {
-        return Ok(await _iPersonService.AddPerson(createPersonForm));
+        var result = await _iPersonService.AddPerson(createPersonForm);
+        return result.StatusCode switch
+        {
+            400 => BadRequest(result),
+            404 => NotFound(result),
+            _ => Ok(result)
+        };
     }
 
     [HttpPut]
     [Authorize]
     public async Task<IActionResult> Edit([FromBody] UpdatePersonForm updatePersonForm)
     {
-        return Ok(await _iPersonService.EditPerson(updatePersonForm));
+        var result = await _iPersonService.EditPerson(updatePersonForm);
+        return result.StatusCode switch
+        {
+            400 => BadRequest(result),
+            404 => NotFound(result),
+            _ => Ok(result)
+        };
     }
 
     [HttpDelete("{id::int}")]
@@ -50,7 +63,7 @@ public class PersonController : ApiController
     public async Task<IActionResult> Delete(int id)
     {
         var result = await _iPersonService.DeletePerson(id);
-        if (result == false) return BadRequest("Can't find person to delete");
-        return Ok("Deleted successfully");
+        if (result.StatusCode is 404) return NotFound(result);
+        return Ok(result);
     }
 }

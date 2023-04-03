@@ -3,8 +3,6 @@ using Microsoft.Extensions.Logging;
 
 namespace PersonTbc.Services.Middlewares;
 
-
-
 public class LoggingMiddleware
 {
     private readonly RequestDelegate _next;

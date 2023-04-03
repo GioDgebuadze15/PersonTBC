@@ -20,7 +20,7 @@ public class UserController : ApiController
     public async Task<IActionResult> Register([FromBody] CreateUserForm createUserForm)
     {
         var result = await _iUserService.RegisterUser(createUserForm);
-        if (result.StatusCode == 400) return BadRequest(result);
+        if (result.StatusCode is 400) return BadRequest(result);
         return Ok(result);
     }
 
@@ -28,7 +28,7 @@ public class UserController : ApiController
     public IActionResult Login([FromBody] LoginUserForm loginUserForm)
     {
         var result = _iUserService.LoginUser(loginUserForm);
-        if (result.StatusCode == 404) return NotFound(result);
+        if (result.StatusCode is 404) return NotFound(result);
         return Ok(result);
     }
 }

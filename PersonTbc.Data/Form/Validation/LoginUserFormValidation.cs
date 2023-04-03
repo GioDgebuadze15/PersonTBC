@@ -2,7 +2,7 @@
 
 namespace PersonTbc.Data.Form.Validation;
 
-public class LoginUserFormValidation : AbstractValidator<CreateUserForm>
+public class LoginUserFormValidation : AbstractValidator<LoginUserForm>
 {
     public LoginUserFormValidation()
     {
