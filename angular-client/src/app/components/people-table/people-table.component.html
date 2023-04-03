@@ -14,8 +14,8 @@
     <mat-icon matSuffix (click)="search(input.value)">search</mat-icon>
   </mat-form-field>
 
-
-  <div class="table-div" style="height: 500px; overflow: auto;">
+  <p *ngIf="errorMessage" class="text-danger">{{ errorMessage }}</p>
+  <div class="table-div">
 
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 

@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {PersonService} from "../../services/person.service";
 import {Router} from "@angular/router";
-import {Response} from "../../shared/interfaces/Person";
+import type {Response} from "../../shared/interfaces";
 
 @Component({
   selector: 'app-add-person',
@@ -27,7 +27,7 @@ export class AddPersonComponent {
 
   addPerson(): void {
     if (this.addPersonForm.valid) {
-      this.validationErrors = new Array<string>();
+      this.resetErrors();
       this.personService.addPerson(this.addPersonForm).subscribe({
         next: ({data}) => {
           if (data) this.router.navigate(['']);
@@ -42,13 +42,14 @@ export class AddPersonComponent {
                 );
               }
             }
+            return;
           }
-          const result: Response = error
+          const result: Response = error;
           if (result.error) this.errorMessage = result.error;
         },
       });
     } else {
-      this.validationErrors = new Array<string>();
+      this.resetErrors();
       this.getAddPersonErrors();
     }
   }
@@ -61,19 +62,22 @@ export class AddPersonComponent {
     return "";
   }
 
-  getAddPersonErrors() {
-    this.validationErrors = new Array<string>();
+  getAddPersonErrors(): void {
+    this.resetErrors();
     for (const controlName in this.addPersonForm.controls) {
       const control = this.addPersonForm.controls[controlName];
       if (control.errors) {
-        console.log(control.errors)
         if (control.getError('required'))
           this.validationErrors.push(`${controlName} is required`);
       }
     }
-    const perIdValidation = this.personalIdValidator();
+    const perIdValidation: string = this.personalIdValidator();
     if (perIdValidation !== "")
       this.validationErrors.push(perIdValidation);
+  }
+
+  resetErrors(): void {
+    this.validationErrors = new Array<string>();
   }
 
 }

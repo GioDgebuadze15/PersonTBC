@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {UserService} from "../../services/user.service";
-import {AuthResponse} from "../../shared/interfaces/Person";
+import type {AuthResponse} from "../../shared/interfaces";
 
 @Component({
   selector: 'app-register',
@@ -18,14 +18,14 @@ export class RegisterComponent {
     this.registrationForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
-      confirmPassword: ['', Validators.required,]
+      confirmPassword: ['', Validators.required]
     });
 
   }
 
-  onRegister() {
+  onRegister(): void {
     if (this.registrationForm.valid) {
-      this.validationErrors = new Array<string>();
+      this.resetErrors();
       this.userService.register(this.registrationForm).subscribe({
         next: ({token}) => {
           if (token) {
@@ -45,18 +45,18 @@ export class RegisterComponent {
               }
             }
           }
-          const result: AuthResponse = error
+          const result: AuthResponse = error;
           if (result.error) this.errorMessage = result.error;
         },
       });
 
     } else {
-      this.validationErrors = new Array<string>();
+      this.resetErrors();
       this.getRegistrationErrors();
     }
   }
 
-  goToLoginPage() {
+  goToLoginPage():void {
     this.router.navigate(['/login']);
   }
 
@@ -66,12 +66,11 @@ export class RegisterComponent {
     return password === confirmPassword;
   }
 
-  getRegistrationErrors() {
-    this.validationErrors = new Array<string>();
+  getRegistrationErrors():void {
+    this.resetErrors();
     for (const controlName in this.registrationForm.controls) {
       const control = this.registrationForm.controls[controlName];
       if (control.errors) {
-        console.log(control.errors)
         if (control.getError('required'))
           this.validationErrors.push(`${controlName} is required`);
         if (control.getError('email'))
@@ -83,5 +82,8 @@ export class RegisterComponent {
 
   }
 
+  resetErrors():void{
+    this.validationErrors = new Array<string>();
+  }
 
 }

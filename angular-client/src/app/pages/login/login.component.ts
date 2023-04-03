@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {UserService} from "../../services/user.service";
-import {AuthResponse, Response} from "../../shared/interfaces/Person";
+import type {AuthResponse} from "../../shared/interfaces";
 
 @Component({
   selector: 'app-login',
@@ -21,9 +21,9 @@ export class LoginComponent {
     });
   }
 
-  onLogin() {
+  onLogin(): void {
     if (this.loginForm.valid) {
-      this.validationErrors = new Array<string>();
+      this.resetErrors();
       this.userService.login(this.loginForm).subscribe({
         next: ({token}) => {
           if (token) {
@@ -43,25 +43,23 @@ export class LoginComponent {
               }
             }
           }
-          const result: AuthResponse = error
+          const result: AuthResponse = error;
           if (result.error) this.errorMessage = result.error;
         },
       });
 
     } else {
-      this.validationErrors = new Array<string>();
+      this.resetErrors();
       this.getLoginErrors();
     }
 
 
   }
 
-  getLoginErrors() {
-    this.validationErrors = new Array<string>();
+  getLoginErrors(): void {
     for (const controlName in this.loginForm.controls) {
       const control = this.loginForm.controls[controlName];
       if (control.errors) {
-        console.log(control.errors)
         if (control.getError('required'))
           this.validationErrors.push(`${controlName} is required`);
         if (control.getError('email'))
@@ -72,9 +70,11 @@ export class LoginComponent {
   }
 
 
-  goToRegistrationPage() {
+  goToRegistrationPage():void {
     this.router.navigate(['/register']);
   }
 
-
+  resetErrors(): void {
+    this.validationErrors = new Array<string>();
+  }
 }

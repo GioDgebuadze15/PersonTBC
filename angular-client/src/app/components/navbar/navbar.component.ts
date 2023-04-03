@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {Router} from "@angular/router";
-import {BehaviorSubject} from "rxjs";
 import {UserService} from "../../services/user.service";
 
 @Component({
@@ -15,11 +14,11 @@ export class NavbarComponent {
 
   }
 
-  goToLoginPage() {
+  goToLoginPage(): void {
     this.router.navigate(['/login']);
   }
 
-  goToHomePage() {
+  goToHomePage(): void {
     this.router.navigate(['/']);
   }
 

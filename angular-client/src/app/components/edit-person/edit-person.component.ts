@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {PersonService} from "../../services/person.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Response} from "../../shared/interfaces/Person";
+import type {Response} from "../../shared/interfaces";
 
 @Component({
   selector: 'app-edit-person',
@@ -36,7 +36,7 @@ export class EditPersonComponent {
     }
   }
 
-  initializePersonDate(id: number) {
+  initializePersonDate(id: number): void {
     this.personService.getPerson(id).subscribe(data => {
       const birthDate = data.dateOfBirth == null ? null : (new Date(data.dateOfBirth).toISOString().substring(0, 10));
       this.editPersonForm.patchValue({
@@ -52,9 +52,9 @@ export class EditPersonComponent {
 
   }
 
-  editPerson() {
+  editPerson(): void {
     if (this.editPersonForm.valid) {
-      this.validationErrors = new Array<string>();
+      this.resetErrors();
       this.personService.updatePerson(this.editPersonForm).subscribe({
         next: ({data}) => {
           if (data) this.router.navigate(['']);
@@ -70,12 +70,12 @@ export class EditPersonComponent {
               }
             }
           }
-          const result: Response = error
+          const result: Response = error;
           if (result.error) this.errorMessage = result.error;
         },
       });
     } else {
-      this.validationErrors = new Array<string>();
+      this.resetErrors();
       this.getEditPersonErrors();
     }
   }
@@ -88,19 +88,22 @@ export class EditPersonComponent {
     return "";
   }
 
-  getEditPersonErrors() {
+  getEditPersonErrors(): void {
     this.validationErrors = new Array<string>();
     for (const controlName in this.editPersonForm.controls) {
       const control = this.editPersonForm.controls[controlName];
       if (control.errors) {
-        console.log(control.errors)
         if (control.getError('required'))
           this.validationErrors.push(`${controlName} is required`);
       }
     }
-    const perIdValidation = this.personalIdValidator();
+    const perIdValidation: string = this.personalIdValidator();
     if (perIdValidation !== "")
       this.validationErrors.push(perIdValidation);
+  }
+
+  resetErrors(): void {
+    this.validationErrors = new Array<string>();
   }
 
 }

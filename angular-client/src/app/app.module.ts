@@ -16,8 +16,8 @@ import {MatInputModule} from "@angular/material/input";
 import {LoginComponent} from './pages/login/login.component';
 import {RegisterComponent} from './pages/register/register.component';
 import {MatButtonModule} from "@angular/material/button";
-import { AddPersonComponent } from './components/add-person/add-person.component';
-import { EditPersonComponent } from './components/edit-person/edit-person.component';
+import {AddPersonComponent} from './components/add-person/add-person.component';
+import {EditPersonComponent} from './components/edit-person/edit-person.component';
 import {MatIconModule} from "@angular/material/icon";
 
 @NgModule({

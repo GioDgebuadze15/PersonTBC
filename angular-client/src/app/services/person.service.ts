@@ -4,7 +4,7 @@ import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {FormGroup} from "@angular/forms";
 import {Router} from "@angular/router";
 import {UserService} from "./user.service";
-import type {Person, Response, UpdatePerson} from "../shared/interfaces/Person";
+import type {Person, Response, UpdatePerson} from "../shared/interfaces";
 
 
 @Injectable({
@@ -39,7 +39,6 @@ export class PersonService {
         'Authorization': `Bearer ${this.userService.getToken()}`
       })
     };
-    console.log(data)
     return this.http.post<Response>(this.apiUrl, data, httpOptionsWithToken);
   }
 
@@ -47,7 +46,6 @@ export class PersonService {
     const data: UpdatePerson = editPersonForm.value;
     data.status = editPersonForm.value.accountStatus === "Active" ? editPersonForm.value.accountStatus = 0 : editPersonForm.value.accountStatus = 1;
 
-    console.log(data)
     const httpOptionsWithToken = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -58,9 +56,8 @@ export class PersonService {
   }
 
 
-
-  deletePerson(id: number) {
+  deletePerson(id: number): Observable<Response> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.userService.getToken()}`);
-    return this.http.delete(`${this.apiUrl}/${id}`, {headers});
+    return this.http.delete<Response>(`${this.apiUrl}/${id}`, {headers});
   }
 }

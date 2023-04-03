@@ -4,7 +4,8 @@ import {PersonService} from '../../services/person.service'
 import * as XLSX from 'xlsx';
 import {Router} from "@angular/router";
 import {UserService} from "../../services/user.service";
-import type {Person} from "../../shared/interfaces/Person";
+import type {Person} from "../../shared/interfaces";
+import type {Response} from "../../shared/interfaces";
 
 
 @Component({
@@ -17,11 +18,12 @@ export class PeopleTableComponent {
   displayedColumns: string[] = ['firstName', 'lastName', 'personalId', 'dateOfBirth', 'gender', 'accountStatus', 'buttons'];
   dataSource: MatTableDataSource<Person> = new MatTableDataSource<Person>();
   private isAuthorized: boolean = false;
+  errorMessage?: string;
 
   constructor(private personService: PersonService, private router: Router, private userService: UserService) {
   }
 
-  applyFilter(event: Event) {
+  applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filterPredicate = (data, filter) => {
       const searchTerms = filter.split(' ');
@@ -34,7 +36,7 @@ export class PeopleTableComponent {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  handleEnter(event: Event) {
+  handleEnter(event: Event): void {
     const searchString = (event.target as HTMLInputElement).value;
     if (searchString === "") {
       this.initializePeople();
@@ -45,7 +47,7 @@ export class PeopleTableComponent {
     })
   }
 
-  search(value: string) {
+  search(value: string): void {
     if (value === "") {
       this.initializePeople();
       return;
@@ -56,12 +58,12 @@ export class PeopleTableComponent {
   }
 
 
-  saveTableDataToExcel() {
+  saveTableDataToExcel(): void {
     this.personService.getPeople().subscribe((people) => {
       const worksheet = XLSX.utils.json_to_sheet(people);
       const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, 'Table Data');
-      XLSX.writeFile(workbook, 'table-data.xlsx');
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'People Data');
+      XLSX.writeFile(workbook, 'people-data.xlsx');
     });
 
   }
@@ -82,9 +84,15 @@ export class PeopleTableComponent {
       this.router.navigate(['login'])
       return;
     }
-    this.personService.deletePerson(id).subscribe((data) => {
-      console.log(data)
-      this.initializePeople();
+    this.personService.deletePerson(id).subscribe({
+      next: ({data}) => {
+        if (data) this.initializePeople();
+        return;
+      },
+      error: ({error}) => {
+        const result: Response = error;
+        if (result.error) this.errorMessage = result.error;
+      },
     });
   }
 
@@ -94,7 +102,6 @@ export class PeopleTableComponent {
 
   initializePeople(): void {
     this.personService.getPeople().subscribe((people) => {
-
       this.dataSource = new MatTableDataSource<Person>(people);
     });
   }
@@ -102,6 +109,4 @@ export class PeopleTableComponent {
   initializePeopleAfterSearch(people: Person[]): void {
     this.dataSource = new MatTableDataSource<Person>(people);
   }
-
-
 }
