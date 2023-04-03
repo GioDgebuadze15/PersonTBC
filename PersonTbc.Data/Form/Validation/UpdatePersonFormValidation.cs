@@ -11,7 +11,7 @@ public class UpdatePersonFormValidation : AbstractValidator<UpdatePersonForm>
         RuleFor(x => x.LastName).NotEmpty().WithMessage("LastName is required.");
         RuleFor(x => x.PersonalId.ToString())
             .NotEmpty().WithMessage("PersonalId is required.")
-            .Length(11).WithMessage("PersonalId must be exactly 9 digits.");
+            .Length(11).WithMessage("PersonalId must be exactly 11 digits.");
         RuleFor(x => x.Gender).NotEmpty().WithMessage("Gender is required.");
         RuleFor(x => x.Status).IsInEnum().WithMessage("Account status is not correct.");
     }

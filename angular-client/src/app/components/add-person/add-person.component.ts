@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {PersonService} from "../../services/person.service";
 import {Router} from "@angular/router";
+import {Response} from "../../shared/interfaces/Person";
 
 @Component({
   selector: 'app-add-person',
@@ -10,37 +11,69 @@ import {Router} from "@angular/router";
 })
 export class AddPersonComponent {
   addPersonForm: FormGroup;
+  errorMessage?: string;
+  validationErrors: Array<string> = new Array<string>();
 
 
   constructor(private fb: FormBuilder, private personService: PersonService, private router: Router) {
     this.addPersonForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      personalId: ['', [Validators.required, this.personalIdValidator()]],
+      personalId: ['', Validators.required],
       dateOfBirth: [null],
-      gender: ['', Validators.required]
+      gender: ['Male']
     });
   }
 
   addPerson(): void {
     if (this.addPersonForm.valid) {
-      this.personService.addPerson(this.addPersonForm).subscribe(() => {
-        this.router.navigate(['']);
+      this.validationErrors = new Array<string>();
+      this.personService.addPerson(this.addPersonForm).subscribe({
+        next: ({data}) => {
+          if (data) this.router.navigate(['']);
+          return;
+        },
+        error: ({error}) => {
+          if (error.errors) {
+            for (const key in error.errors) {
+              if (error.errors.hasOwnProperty(key)) {
+                this.validationErrors = this.validationErrors.concat(
+                  error.errors[key]
+                );
+              }
+            }
+          }
+          const result: Response = error
+          if (result.error) this.errorMessage = result.error;
+        },
       });
+    } else {
+      this.validationErrors = new Array<string>();
+      this.getAddPersonErrors();
     }
   }
 
-  personalIdValidator(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      const personalId = control.value;
-      if (personalId === null || personalId === '') {
-        return {'personalId': {value: personalId, message: 'Personal ID is required.'}};
+  personalIdValidator(): string {
+    const personalId = this.addPersonForm.value.personalId;
+    if (!/^\d{11}$/.test(personalId)) {
+      return 'Personal ID must be a number of length 11.';
+    }
+    return "";
+  }
+
+  getAddPersonErrors() {
+    this.validationErrors = new Array<string>();
+    for (const controlName in this.addPersonForm.controls) {
+      const control = this.addPersonForm.controls[controlName];
+      if (control.errors) {
+        console.log(control.errors)
+        if (control.getError('required'))
+          this.validationErrors.push(`${controlName} is required`);
       }
-      if (!/^\d{11}$/.test(personalId)) {
-        return {'personalId': {value: personalId, message: 'Personal ID must be a number of length 11.'}};
-      }
-      return null;
-    };
+    }
+    const perIdValidation = this.personalIdValidator();
+    if (perIdValidation !== "")
+      this.validationErrors.push(perIdValidation);
   }
 
 }

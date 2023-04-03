@@ -23,12 +23,17 @@
                   placeholder="Enter your password" formControlName="password" matInput/>
               </div>
 
+              <div *ngFor="let e of validationErrors">
+                <p class="text-danger">{{ e }}</p>
+              </div>
+              <p *ngIf="errorMessage" class="text-danger">{{ errorMessage }}</p>
               <button class="btn btn-outline-light btn-lg px-5" type="submit">Login</button>
 
             </div>
 
             <div>
-              <p class="mb-0">Don't have an account? <strong class="signUpButton text-primary" (click)="goToRegistrationPage()">Sign
+              <p class="mb-0">Don't have an account? <strong class="signUpButton text-primary"
+                                                             (click)="goToRegistrationPage()">Sign
                 Up</strong>
               </p>
             </div>

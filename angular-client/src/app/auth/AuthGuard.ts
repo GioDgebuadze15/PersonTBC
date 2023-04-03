@@ -5,7 +5,6 @@ import {
   RouterStateSnapshot,
   UrlTree,
   Router,
-  CanActivateChild
 } from '@angular/router';
 import {Observable} from 'rxjs';
 import {UserService} from '../services/user.service';
@@ -26,7 +25,6 @@ export class AuthGuard implements CanActivate {
       this.isAuthorized = value;
     });
     if (this.isAuthorized) {
-      console.log("hello")
       return true;
     } else {
       this.router.navigate(['/login']);

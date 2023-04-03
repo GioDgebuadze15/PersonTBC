@@ -1,11 +1,10 @@
 import {Injectable} from '@angular/core';
-import type {Person} from '../components/people-table/people-table.component'
 import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {FormGroup} from "@angular/forms";
 import {Router} from "@angular/router";
 import {UserService} from "./user.service";
-
+import type {Person, Response, UpdatePerson} from "../shared/interfaces/Person";
 
 
 @Injectable({
@@ -32,7 +31,7 @@ export class PersonService {
   }
 
 
-  addPerson(addPersonForm: FormGroup): Observable<Person> {
+  addPerson(addPersonForm: FormGroup): Observable<Response> {
     const data: object = addPersonForm.value;
     const httpOptionsWithToken = {
       headers: new HttpHeaders({
@@ -41,19 +40,24 @@ export class PersonService {
       })
     };
     console.log(data)
-    return this.http.post<Person>(this.apiUrl, data, httpOptionsWithToken);
+    return this.http.post<Response>(this.apiUrl, data, httpOptionsWithToken);
   }
 
-  updatePerson(editPersonForm: FormGroup): Observable<Person> {
-    const data: object = editPersonForm.value;
+  updatePerson(editPersonForm: FormGroup): Observable<Response> {
+    const data: UpdatePerson = editPersonForm.value;
+    data.status = editPersonForm.value.accountStatus === "Active" ? editPersonForm.value.accountStatus = 0 : editPersonForm.value.accountStatus = 1;
+
+    console.log(data)
     const httpOptionsWithToken = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${this.userService.getToken()}`
       })
     };
-    return this.http.put<Person>(this.apiUrl, data, httpOptionsWithToken);
+    return this.http.put<Response>(this.apiUrl, data, httpOptionsWithToken);
   }
+
+
 
   deletePerson(id: number) {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.userService.getToken()}`);

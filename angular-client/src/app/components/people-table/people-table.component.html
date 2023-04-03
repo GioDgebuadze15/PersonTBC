@@ -11,7 +11,7 @@
     <mat-label class="text-white">Search</mat-label>
     <input matInput (keyup)="applyFilter($event)" (keyup.enter)="handleEnter($event)" placeholder="Search here..."
            #input>
-    <mat-icon matSuffix>search</mat-icon>
+    <mat-icon matSuffix (click)="search(input.value)">search</mat-icon>
   </mat-form-field>
 
 

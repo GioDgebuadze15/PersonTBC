@@ -31,13 +31,17 @@
                   placeholder="Enter your password" formControlName="confirmPassword" matInput/>
               </div>
 
-
+              <div *ngFor="let e of validationErrors">
+                <p class="text-danger">{{ e }}</p>
+              </div>
+              <p *ngIf="errorMessage" class="text-danger">{{ errorMessage }}</p>
               <button class="btn btn-outline-light btn-lg px-5" type="submit">Register</button>
 
             </div>
 
             <div>
-              <p class="mb-0">Already Registered? <strong class="loginButton text-primary" (click)="goToLoginPage()">Log in</strong>
+              <p class="mb-0">Already Registered? <strong class="loginButton text-primary" (click)="goToLoginPage()">Log
+                in</strong>
               </p>
             </div>
 

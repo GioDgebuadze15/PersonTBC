@@ -46,6 +46,10 @@
                 </div>
               </div>
 
+              <div *ngFor="let e of validationErrors">
+                <p class="text-danger">{{ e }}</p>
+              </div>
+              <p *ngIf="errorMessage" class="text-danger">{{ errorMessage }}</p>
 
               <button class="btn btn-outline-light btn-lg px-5" type="submit">Add</button>
 

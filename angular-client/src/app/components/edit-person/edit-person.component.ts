@@ -1,9 +1,8 @@
 import {Component} from '@angular/core';
 import {PersonService} from "../../services/person.service";
-import {Person} from "../people-table/people-table.component";
-import {Observable} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
-import {AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Response} from "../../shared/interfaces/Person";
 
 @Component({
   selector: 'app-edit-person',
@@ -12,8 +11,9 @@ import {AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators} from "
 })
 export class EditPersonComponent {
   id?: number;
-  // person?: Observable<Person>;
   editPersonForm: FormGroup;
+  errorMessage?: string;
+  validationErrors: Array<string> = new Array<string>();
 
   constructor(private personService: PersonService, private route: ActivatedRoute, private fb: FormBuilder,
               private router: Router) {
@@ -21,7 +21,7 @@ export class EditPersonComponent {
       id: ['', [Validators.required, Validators.min(1)]],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      personalId: ['', [Validators.required, this.personalIdValidator()]],
+      personalId: ['', Validators.required],
       dateOfBirth: [null],
       gender: ['', Validators.required],
       accountStatus: ['', [Validators.required]]
@@ -33,18 +33,18 @@ export class EditPersonComponent {
 
     if (this.id > 0) {
       this.initializePersonDate(this.id);
-      console.log(this.editPersonForm)
     }
   }
 
   initializePersonDate(id: number) {
     this.personService.getPerson(id).subscribe(data => {
+      const birthDate = data.dateOfBirth == null ? null : (new Date(data.dateOfBirth).toISOString().substring(0, 10));
       this.editPersonForm.patchValue({
         id: data.id,
         firstName: data.firstName,
         lastName: data.lastName,
         personalId: data.personalId,
-        dateOfBirth: data.dateOfBirth,
+        dateOfBirth: birthDate,
         gender: data.gender,
         accountStatus: data.accountStatus
       });
@@ -54,23 +54,53 @@ export class EditPersonComponent {
 
   editPerson() {
     if (this.editPersonForm.valid) {
-      this.personService.updatePerson(this.editPersonForm).subscribe(() => {
-        this.router.navigate(['/'])
+      this.validationErrors = new Array<string>();
+      this.personService.updatePerson(this.editPersonForm).subscribe({
+        next: ({data}) => {
+          if (data) this.router.navigate(['']);
+          return;
+        },
+        error: ({error}) => {
+          if (error.errors) {
+            for (const key in error.errors) {
+              if (error.errors.hasOwnProperty(key)) {
+                this.validationErrors = this.validationErrors.concat(
+                  error.errors[key]
+                );
+              }
+            }
+          }
+          const result: Response = error
+          if (result.error) this.errorMessage = result.error;
+        },
       });
+    } else {
+      this.validationErrors = new Array<string>();
+      this.getEditPersonErrors();
     }
   }
 
-  personalIdValidator(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      const personalId = control.value;
-      if (personalId === null || personalId === '') {
-        return {'personalId': {value: personalId, message: 'Personal ID is required.'}};
+  personalIdValidator(): string {
+    const personalId = this.editPersonForm.value.personalId;
+    if (!/^\d{11}$/.test(personalId)) {
+      return 'Personal ID must be a number of length 11.';
+    }
+    return "";
+  }
+
+  getEditPersonErrors() {
+    this.validationErrors = new Array<string>();
+    for (const controlName in this.editPersonForm.controls) {
+      const control = this.editPersonForm.controls[controlName];
+      if (control.errors) {
+        console.log(control.errors)
+        if (control.getError('required'))
+          this.validationErrors.push(`${controlName} is required`);
       }
-      if (!/^\d{11}$/.test(personalId)) {
-        return {'personalId': {value: personalId, message: 'Personal ID must be a number of length 11.'}};
-      }
-      return null;
-    };
+    }
+    const perIdValidation = this.personalIdValidator();
+    if (perIdValidation !== "")
+      this.validationErrors.push(perIdValidation);
   }
 
 }

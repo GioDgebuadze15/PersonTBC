@@ -4,17 +4,7 @@ import {PersonService} from '../../services/person.service'
 import * as XLSX from 'xlsx';
 import {Router} from "@angular/router";
 import {UserService} from "../../services/user.service";
-
-
-export interface Person {
-  id?: number
-  firstName: string;
-  lastName: string;
-  personalId: number;
-  dateOfBirth: string;
-  gender: string;
-  accountStatus: string;
-}
+import type {Person} from "../../shared/interfaces/Person";
 
 
 @Component({
@@ -26,7 +16,6 @@ export class PeopleTableComponent {
   people: Person[] = [];
   displayedColumns: string[] = ['firstName', 'lastName', 'personalId', 'dateOfBirth', 'gender', 'accountStatus', 'buttons'];
   dataSource: MatTableDataSource<Person> = new MatTableDataSource<Person>();
-  searchQuery?: any;
   private isAuthorized: boolean = false;
 
   constructor(private personService: PersonService, private router: Router, private userService: UserService) {
@@ -47,12 +36,21 @@ export class PeopleTableComponent {
 
   handleEnter(event: Event) {
     const searchString = (event.target as HTMLInputElement).value;
-    console.log(searchString)
     if (searchString === "") {
       this.initializePeople();
       return;
     }
     this.personService.searchPeople(searchString).subscribe((data) => {
+      this.initializePeopleAfterSearch(data);
+    })
+  }
+
+  search(value: string) {
+    if (value === "") {
+      this.initializePeople();
+      return;
+    }
+    this.personService.searchPeople(value).subscribe((data) => {
       this.initializePeopleAfterSearch(data);
     })
   }
